@@ -1,0 +1,1745 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ARQ-TECH Argentina | Construcción 360°</title>
+  <meta name="description" content="Firma 360° en construcción. Steel Framing, Interiorismo, Domótica. Córdoba, Argentina." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --navy: #0F172A;
+      --navy-mid: #1E293B;
+      --navy-light: #334155;
+      --gold: #F5C518;
+      --gold-light: #FFD700;
+      --gold-dim: rgba(245,197,24,0.15);
+      --white: #F8FAFC;
+      --gray: #94A3B8;
+      --gray-light: #CBD5E1;
+
+      /* Vertical colors */
+      --sofi-orange: #FF6B35;
+      --sofi-orange-dim: rgba(255,107,53,0.12);
+      --sofi-gray: #78716C;
+      --op-beige: #D4B896;
+      --op-cream: #F5F0E8;
+      --op-carbon: #2C2825;
+      --op-dim: rgba(212,184,150,0.12);
+      --retys-cyan: #22D3EE;
+      --retys-blue: #0EA5E9;
+      --retys-dim: rgba(34,211,238,0.08);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; overflow-x: hidden; }
+
+    body {
+      background: var(--navy);
+      color: var(--white);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 16px;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* ═══ CANVAS ═══ */
+    #bg-canvas {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    /* ═══ NAV ═══ */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      padding: 1rem 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(15,23,42,0.7);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(245,197,24,0.1);
+      transition: all 0.4s ease;
+    }
+
+    nav.scrolled {
+      padding: 0.75rem 1.5rem;
+      background: rgba(15,23,42,0.95);
+    }
+
+    .nav-logo {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 1.1rem;
+      letter-spacing: -0.02em;
+      color: var(--white);
+    }
+
+    .nav-logo span { color: var(--gold); }
+
+    .nav-cta {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem 1.1rem;
+      background: var(--gold);
+      color: var(--navy);
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 0.78rem;
+      letter-spacing: 0.05em;
+      border-radius: 100px;
+      text-decoration: none;
+      transition: all 0.25s ease;
+    }
+
+    .nav-cta:hover {
+      background: var(--gold-light);
+      transform: scale(1.03);
+    }
+
+    /* ═══ HERO ═══ */
+    #hero {
+      position: relative;
+      z-index: 1;
+      min-height: 100svh;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 2rem 1.5rem 4rem;
+    }
+
+    .hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.35rem 0.9rem;
+      border: 1px solid rgba(245,197,24,0.4);
+      border-radius: 100px;
+      font-size: 0.72rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 1.5rem;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.3s forwards;
+    }
+
+    .hero-eyebrow::before {
+      content: '';
+      width: 6px; height: 6px;
+      background: var(--gold);
+      border-radius: 50%;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(0.8); }
+    }
+
+    .hero-h1 {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: clamp(2.8rem, 10vw, 5rem);
+      line-height: 0.95;
+      letter-spacing: -0.03em;
+      margin-bottom: 1.5rem;
+      opacity: 0;
+      animation: fadeUp 0.9s 0.5s forwards;
+    }
+
+    .hero-h1 .line-gold { color: var(--gold); }
+
+    .hero-sub {
+      font-size: 1rem;
+      color: var(--gray-light);
+      max-width: 28rem;
+      line-height: 1.7;
+      margin-bottom: 2.5rem;
+      opacity: 0;
+      animation: fadeUp 0.9s 0.7s forwards;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 0.85rem;
+      opacity: 0;
+      animation: fadeUp 0.9s 0.9s forwards;
+    }
+
+    .btn-primary {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.6rem;
+      padding: 1rem 2rem;
+      background: var(--gold);
+      color: var(--navy);
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 0.9rem;
+      letter-spacing: 0.04em;
+      border-radius: 12px;
+      text-decoration: none;
+      transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .btn-primary:hover { transform: translateY(-2px) scale(1.01); box-shadow: 0 12px 40px rgba(245,197,24,0.35); }
+
+    .btn-secondary {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.6rem;
+      padding: 1rem 2rem;
+      border: 1px solid rgba(255,255,255,0.15);
+      color: var(--white);
+      font-family: 'Syne', sans-serif;
+      font-weight: 600;
+      font-size: 0.9rem;
+      border-radius: 12px;
+      text-decoration: none;
+      transition: all 0.25s ease;
+    }
+
+    .btn-secondary:hover { border-color: rgba(255,255,255,0.4); background: rgba(255,255,255,0.05); }
+
+    .hero-scroll {
+      position: absolute;
+      bottom: 1.5rem;
+      right: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.4rem;
+      opacity: 0;
+      animation: fadeIn 1s 1.4s forwards;
+    }
+
+    .hero-scroll span {
+      font-size: 0.65rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--gray);
+      writing-mode: vertical-rl;
+    }
+
+    .scroll-line {
+      width: 1px;
+      height: 50px;
+      background: linear-gradient(to bottom, var(--gold), transparent);
+      animation: scrollDown 2s infinite;
+    }
+
+    @keyframes scrollDown {
+      0% { transform: scaleY(0); transform-origin: top; }
+      50% { transform: scaleY(1); transform-origin: top; }
+      51% { transform: scaleY(1); transform-origin: bottom; }
+      100% { transform: scaleY(0); transform-origin: bottom; }
+    }
+
+    /* ═══ STATS ═══ */
+    #stats {
+      position: relative;
+      z-index: 1;
+      padding: 3rem 1.5rem;
+      background: linear-gradient(to bottom, transparent, rgba(30,41,59,0.5));
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: rgba(255,255,255,0.06);
+      border-radius: 16px;
+      overflow: hidden;
+    }
+
+    .stat-item {
+      background: rgba(15,23,42,0.8);
+      backdrop-filter: blur(10px);
+      padding: 1.5rem 1rem;
+      text-align: center;
+    }
+
+    .stat-num {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 2rem;
+      color: var(--gold);
+      line-height: 1;
+      margin-bottom: 0.3rem;
+    }
+
+    .stat-label {
+      font-size: 0.72rem;
+      color: var(--gray);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    /* ═══ SECTION LABELS ═══ */
+    .section-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.7rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 1rem;
+    }
+
+    .section-label::before {
+      content: '';
+      display: block;
+      width: 24px;
+      height: 1px;
+      background: var(--gold);
+    }
+
+    /* ═══ 360 PITCH ═══ */
+    #pitch {
+      position: relative;
+      z-index: 1;
+      padding: 5rem 1.5rem;
+    }
+
+    .pitch-h2 {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: clamp(1.8rem, 6vw, 3rem);
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+      margin-bottom: 1.5rem;
+    }
+
+    .pitch-h2 em {
+      font-style: normal;
+      color: var(--gold);
+      position: relative;
+    }
+
+    .pitch-p {
+      color: var(--gray-light);
+      line-height: 1.8;
+      margin-bottom: 1.5rem;
+      font-size: 0.95rem;
+    }
+
+    /* Journey timeline */
+    .journey {
+      margin-top: 3rem;
+      position: relative;
+    }
+
+    .journey::before {
+      content: '';
+      position: absolute;
+      left: 20px;
+      top: 0; bottom: 0;
+      width: 1px;
+      background: linear-gradient(to bottom, var(--gold), rgba(245,197,24,0.1));
+    }
+
+    .journey-step {
+      display: flex;
+      gap: 1.5rem;
+      padding-bottom: 2.5rem;
+      position: relative;
+    }
+
+    .journey-step:last-child { padding-bottom: 0; }
+
+    .step-dot {
+      flex-shrink: 0;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: 1px solid var(--gold);
+      background: var(--navy);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 0.8rem;
+      color: var(--gold);
+      position: relative;
+      z-index: 1;
+    }
+
+    .step-dot.sofi { border-color: var(--sofi-orange); color: var(--sofi-orange); }
+    .step-dot.op { border-color: var(--op-beige); color: var(--op-beige); }
+    .step-dot.retys { border-color: var(--retys-cyan); color: var(--retys-cyan); }
+
+    .step-content h4 {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 1rem;
+      margin-bottom: 0.3rem;
+    }
+
+    .step-content p {
+      font-size: 0.85rem;
+      color: var(--gray);
+      line-height: 1.6;
+    }
+
+    /* ═══ VERTICALES NAV ═══ */
+    #verticales {
+      position: relative;
+      z-index: 1;
+      padding: 2rem 1.5rem 1rem;
+    }
+
+    .vert-tabs {
+      display: flex;
+      gap: 0;
+      border-radius: 14px;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.08);
+      background: rgba(30,41,59,0.4);
+      backdrop-filter: blur(10px);
+    }
+
+    .vert-tab {
+      flex: 1;
+      padding: 1rem 0.5rem;
+      background: none;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.4rem;
+      transition: all 0.3s ease;
+      border-right: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .vert-tab:last-child { border-right: none; }
+
+    .vert-tab .tab-icon {
+      font-size: 1.3rem;
+    }
+
+    .vert-tab .tab-name {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 0.65rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--gray);
+      transition: color 0.3s;
+    }
+
+    .vert-tab .tab-sub {
+      font-size: 0.58rem;
+      color: var(--gray);
+      opacity: 0.6;
+    }
+
+    .vert-tab.active-sofi { background: var(--sofi-orange-dim); }
+    .vert-tab.active-sofi .tab-name { color: var(--sofi-orange); }
+
+    .vert-tab.active-op { background: var(--op-dim); }
+    .vert-tab.active-op .tab-name { color: var(--op-beige); }
+
+    .vert-tab.active-retys { background: var(--retys-dim); }
+    .vert-tab.active-retys .tab-name { color: var(--retys-cyan); }
+
+    /* ═══ VERTICAL PANELS ═══ */
+    .vert-panel {
+      display: none;
+      position: relative;
+      z-index: 1;
+    }
+
+    .vert-panel.active { display: block; }
+
+    /* Panel Header */
+    .panel-hero {
+      padding: 2.5rem 1.5rem 2rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .panel-bg-glow {
+      position: absolute;
+      width: 300px; height: 300px;
+      border-radius: 50%;
+      filter: blur(80px);
+      opacity: 0.25;
+      top: -100px; right: -100px;
+      pointer-events: none;
+    }
+
+    #sofi-panel .panel-bg-glow { background: var(--sofi-orange); }
+    #op-panel .panel-bg-glow { background: var(--op-beige); }
+    #retys-panel .panel-bg-glow { background: var(--retys-cyan); }
+
+    .panel-brand {
+      display: inline-block;
+      padding: 0.3rem 0.8rem;
+      border-radius: 6px;
+      font-size: 0.65rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      margin-bottom: 1rem;
+    }
+
+    #sofi-panel .panel-brand { background: var(--sofi-orange-dim); color: var(--sofi-orange); }
+    #op-panel .panel-brand { background: var(--op-dim); color: var(--op-beige); }
+    #retys-panel .panel-brand { background: var(--retys-dim); color: var(--retys-cyan); }
+
+    .panel-title {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: clamp(1.8rem, 7vw, 2.5rem);
+      line-height: 1.05;
+      letter-spacing: -0.02em;
+      margin-bottom: 0.5rem;
+    }
+
+    #sofi-panel .panel-accent { color: var(--sofi-orange); }
+    #op-panel .panel-accent { color: var(--op-beige); }
+    #retys-panel .panel-accent { color: var(--retys-cyan); }
+
+    .panel-tagline {
+      font-size: 0.9rem;
+      color: var(--gray-light);
+      line-height: 1.7;
+      margin-bottom: 1.5rem;
+    }
+
+    /* Responsable card */
+    .responsable-card {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 1rem 1.2rem;
+      border-radius: 14px;
+      border: 1px solid;
+      background: rgba(15,23,42,0.5);
+      backdrop-filter: blur(10px);
+      margin-bottom: 2rem;
+    }
+
+    #sofi-panel .responsable-card { border-color: rgba(255,107,53,0.25); }
+    #op-panel .responsable-card { border-color: rgba(212,184,150,0.25); }
+    #retys-panel .responsable-card { border-color: rgba(34,211,238,0.2); }
+
+    .avatar {
+      width: 48px; height: 48px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.3rem;
+      flex-shrink: 0;
+    }
+
+    #sofi-panel .avatar { background: var(--sofi-orange-dim); }
+    #op-panel .avatar { background: var(--op-dim); }
+    #retys-panel .avatar { background: var(--retys-dim); }
+
+    .resp-info h4 {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 0.9rem;
+      margin-bottom: 0.1rem;
+    }
+
+    .resp-info p {
+      font-size: 0.75rem;
+      color: var(--gray);
+    }
+
+    .resp-badge {
+      margin-left: auto;
+      padding: 0.25rem 0.6rem;
+      border-radius: 100px;
+      font-size: 0.62rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+    }
+
+    #sofi-panel .resp-badge { background: var(--sofi-orange-dim); color: var(--sofi-orange); }
+    #op-panel .resp-badge { background: var(--op-dim); color: var(--op-beige); }
+    #retys-panel .resp-badge { background: var(--retys-dim); color: var(--retys-cyan); }
+
+    /* Keywords pills */
+    .keywords {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      padding: 0 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .kw-pill {
+      padding: 0.35rem 0.8rem;
+      border-radius: 100px;
+      font-size: 0.72rem;
+      font-weight: 500;
+      border: 1px solid;
+    }
+
+    #sofi-panel .kw-pill { border-color: rgba(255,107,53,0.3); color: rgba(255,107,53,0.85); background: var(--sofi-orange-dim); }
+    #op-panel .kw-pill { border-color: rgba(212,184,150,0.3); color: rgba(212,184,150,0.85); background: var(--op-dim); }
+    #retys-panel .kw-pill { border-color: rgba(34,211,238,0.2); color: rgba(34,211,238,0.8); background: var(--retys-dim); }
+
+    /* Servicios */
+    .servicios-section {
+      padding: 0 1.5rem 2rem;
+    }
+
+    .servicios-title {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 0.75rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--gray);
+      margin-bottom: 1rem;
+    }
+
+    .servicio-card {
+      background: rgba(30,41,59,0.5);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 14px;
+      padding: 1.2rem;
+      margin-bottom: 0.75rem;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.3s ease;
+    }
+
+    .servicio-card:hover {
+      border-color: rgba(255,255,255,0.12);
+      transform: translateX(4px);
+    }
+
+    .servicio-card::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 3px;
+      border-radius: 3px 0 0 3px;
+    }
+
+    #sofi-panel .servicio-card::before { background: var(--sofi-orange); }
+    #op-panel .servicio-card::before { background: var(--op-beige); }
+    #retys-panel .servicio-card::before { background: var(--retys-cyan); }
+
+    .servicio-header {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .servicio-icon {
+      font-size: 1.2rem;
+      line-height: 1;
+      margin-top: 0.1rem;
+    }
+
+    .servicio-name {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 0.95rem;
+      flex: 1;
+      line-height: 1.2;
+    }
+
+    .servicio-desc {
+      font-size: 0.82rem;
+      color: var(--gray);
+      line-height: 1.6;
+      padding-left: 2rem;
+    }
+
+    /* FAQ */
+    .faq-section {
+      padding: 0 1.5rem 2rem;
+    }
+
+    .faq-item {
+      border-bottom: 1px solid rgba(255,255,255,0.07);
+      padding: 1rem 0;
+    }
+
+    .faq-q {
+      font-family: 'Syne', sans-serif;
+      font-weight: 600;
+      font-size: 0.87rem;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .faq-toggle {
+      font-size: 1.2rem;
+      color: var(--gray);
+      transition: transform 0.3s;
+      flex-shrink: 0;
+    }
+
+    .faq-item.open .faq-toggle { transform: rotate(45deg); }
+    #sofi-panel .faq-item.open .faq-toggle { color: var(--sofi-orange); }
+    #op-panel .faq-item.open .faq-toggle { color: var(--op-beige); }
+    #retys-panel .faq-item.open .faq-toggle { color: var(--retys-cyan); }
+
+    .faq-a {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.35s ease, padding 0.35s ease;
+      font-size: 0.83rem;
+      color: var(--gray-light);
+      line-height: 1.7;
+    }
+
+    .faq-item.open .faq-a {
+      max-height: 200px;
+      padding-top: 0.75rem;
+    }
+
+    /* CTA Panel */
+    .panel-cta {
+      padding: 2rem 1.5rem;
+      margin: 0 1.5rem 2rem;
+      border-radius: 18px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    #sofi-panel .panel-cta { background: linear-gradient(135deg, rgba(255,107,53,0.15), rgba(255,107,53,0.05)); border: 1px solid rgba(255,107,53,0.25); }
+    #op-panel .panel-cta { background: linear-gradient(135deg, rgba(212,184,150,0.12), rgba(212,184,150,0.04)); border: 1px solid rgba(212,184,150,0.2); }
+    #retys-panel .panel-cta { background: linear-gradient(135deg, rgba(34,211,238,0.1), rgba(14,165,233,0.04)); border: 1px solid rgba(34,211,238,0.15); }
+
+    .panel-cta h3 {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 1.25rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .panel-cta p {
+      font-size: 0.82rem;
+      color: var(--gray-light);
+      margin-bottom: 1.5rem;
+      line-height: 1.6;
+    }
+
+    .btn-wa {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      padding: 0.9rem 1.8rem;
+      background: #25D366;
+      color: #fff;
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 0.88rem;
+      border-radius: 12px;
+      text-decoration: none;
+      transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .btn-wa:hover { transform: translateY(-2px) scale(1.03); box-shadow: 0 8px 30px rgba(37,211,102,0.4); }
+
+    .btn-wa-alt {
+      background: var(--sofi-orange);
+    }
+    .btn-wa-alt:hover { box-shadow: 0 8px 30px rgba(255,107,53,0.4); }
+
+    .btn-wa-op {
+      background: linear-gradient(135deg, #8B6914, #C9A227);
+    }
+    .btn-wa-op:hover { box-shadow: 0 8px 30px rgba(201,162,39,0.4); }
+
+    /* ═══ 360 ECOSYSTEM SECTION ═══ */
+    #ecosystem {
+      position: relative;
+      z-index: 1;
+      padding: 5rem 1.5rem;
+    }
+
+    .eco-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1rem;
+      margin-top: 2rem;
+    }
+
+    .eco-card {
+      background: rgba(30,41,59,0.4);
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 16px;
+      padding: 1.5rem;
+      display: flex;
+      gap: 1rem;
+      align-items: flex-start;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .eco-card::after {
+      content: '';
+      position: absolute;
+      bottom: 0; right: 0;
+      width: 80px; height: 80px;
+      border-radius: 50%;
+      opacity: 0.06;
+      filter: blur(30px);
+    }
+
+    .eco-card:nth-child(1)::after { background: var(--sofi-orange); }
+    .eco-card:nth-child(2)::after { background: var(--op-beige); }
+    .eco-card:nth-child(3)::after { background: var(--retys-cyan); }
+
+    .eco-num {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 2.5rem;
+      line-height: 1;
+      opacity: 0.12;
+      color: var(--white);
+      flex-shrink: 0;
+    }
+
+    .eco-text h3 {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 0.95rem;
+      margin-bottom: 0.35rem;
+    }
+
+    .eco-text p {
+      font-size: 0.8rem;
+      color: var(--gray);
+      line-height: 1.6;
+    }
+
+    /* ═══ FLOATING WA BUTTON ═══ */
+    .wa-float {
+      position: fixed;
+      bottom: 1.5rem;
+      right: 1.5rem;
+      z-index: 200;
+      width: 56px; height: 56px;
+      background: #25D366;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 20px rgba(37,211,102,0.5);
+      text-decoration: none;
+      transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+      animation: floatPop 1s 2s both;
+    }
+
+    .wa-float:hover { transform: scale(1.12); box-shadow: 0 8px 30px rgba(37,211,102,0.6); }
+
+    .wa-float svg { width: 28px; height: 28px; fill: white; }
+
+    @keyframes floatPop {
+      from { opacity: 0; transform: scale(0.5); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    .wa-pulse {
+      position: absolute;
+      inset: -4px;
+      border-radius: 50%;
+      border: 2px solid rgba(37,211,102,0.5);
+      animation: waPulse 2s infinite;
+    }
+
+    @keyframes waPulse {
+      0% { transform: scale(1); opacity: 0.8; }
+      100% { transform: scale(1.5); opacity: 0; }
+    }
+
+    /* ═══ FOOTER ═══ */
+    footer {
+      position: relative;
+      z-index: 1;
+      padding: 3rem 1.5rem 2rem;
+      border-top: 1px solid rgba(255,255,255,0.06);
+      text-align: center;
+    }
+
+    .footer-logo {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 1.3rem;
+      letter-spacing: -0.02em;
+      color: var(--white);
+      margin-bottom: 0.5rem;
+    }
+
+    .footer-logo span { color: var(--gold); }
+
+    .footer-sub {
+      font-size: 0.8rem;
+      color: var(--gray);
+      margin-bottom: 1.5rem;
+    }
+
+    .footer-brands {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+      margin-bottom: 2rem;
+    }
+
+    .footer-brand {
+      padding: 0.3rem 0.8rem;
+      border-radius: 100px;
+      font-size: 0.68rem;
+      font-weight: 600;
+      border: 1px solid;
+    }
+
+    .footer-brand.sofi { border-color: rgba(255,107,53,0.4); color: var(--sofi-orange); }
+    .footer-brand.op { border-color: rgba(212,184,150,0.4); color: var(--op-beige); }
+    .footer-brand.retys { border-color: rgba(34,211,238,0.3); color: var(--retys-cyan); }
+
+    .footer-legal {
+      font-size: 0.7rem;
+      color: rgba(148,163,184,0.5);
+    }
+
+    /* ═══ ANIMATIONS ═══ */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: none;
+    }
+
+    /* ═══ RESPONSIVE ═══ */
+    @media (min-width: 640px) {
+      .hero-actions { flex-direction: row; }
+      .eco-grid { grid-template-columns: 1fr 1fr; }
+      .stats-grid { grid-template-columns: repeat(3, 1fr); }
+    }
+
+    @media (min-width: 768px) {
+      .eco-grid { grid-template-columns: 1fr 1fr 1fr; }
+    }
+
+    /* ═══ PANEL ANIMATION ═══ */
+    .vert-panel.active {
+      animation: panelIn 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    @keyframes panelIn {
+      from { opacity: 0; transform: translateY(16px); }
+      to { opacity: 1; transform: none; }
+    }
+
+    /* Divider */
+    .section-divider {
+      height: 1px;
+      background: linear-gradient(to right, transparent, rgba(255,255,255,0.08), transparent);
+      margin: 0 1.5rem;
+    }
+
+    /* ═══ GLOW BARS ═══ */
+    .glow-bar {
+      height: 1px;
+      background: linear-gradient(to right, transparent, var(--gold), transparent);
+      margin: 0;
+      opacity: 0.4;
+    }
+
+    .glow-bar.sofi { background: linear-gradient(to right, transparent, var(--sofi-orange), transparent); }
+    .glow-bar.op { background: linear-gradient(to right, transparent, var(--op-beige), transparent); }
+    .glow-bar.retys { background: linear-gradient(to right, transparent, var(--retys-cyan), transparent); }
+  </style>
+</head>
+<body>
+
+<!-- THREE.JS CANVAS -->
+<canvas id="bg-canvas"></canvas>
+
+<!-- FLOATING WHATSAPP -->
+<a href="https://wa.me/5493541000000?text=Hola%20ARQ-TECH%2C%20quiero%20consultar%20sobre%20sus%20servicios" class="wa-float" target="_blank" rel="noopener" aria-label="Contactar por WhatsApp">
+  <div class="wa-pulse"></div>
+  <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+  </svg>
+</a>
+
+<!-- NAV -->
+<nav id="navbar">
+  <div class="nav-logo">ARQ<span>-TECH</span> Argentina</div>
+  <a href="https://wa.me/5493541000000?text=Hola%20ARQ-TECH%2C%20quiero%20consultar" class="nav-cta" target="_blank">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+    Consultar ahora
+  </a>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-eyebrow">🏗️ Firma 360° en Construcción · Córdoba, Argentina</div>
+  <h1 class="hero-h1">
+    Tu obra,<br/>
+    <span class="line-gold">completa.</span><br/>
+    De inicio<br/>
+    a fin.
+  </h1>
+  <p class="hero-sub">
+    Estructura, diseño e inteligencia bajo un mismo ecosistema. Desde los cimientos hasta domótica avanzada — somos la única firma que acompaña cada etapa de tu proyecto.
+  </p>
+  <div class="hero-actions">
+    <a href="#verticales" class="btn-primary">
+      <span>Ver nuestros servicios</span>
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg>
+    </a>
+    <a href="#pitch" class="btn-secondary">
+      <span>¿Cómo funciona?</span>
+    </a>
+  </div>
+
+  <div class="hero-scroll">
+    <div class="scroll-line"></div>
+    <span>scroll</span>
+  </div>
+</section>
+
+<!-- STATS -->
+<section id="stats">
+  <div class="stats-grid reveal">
+    <div class="stat-item">
+      <div class="stat-num">3</div>
+      <div class="stat-label">Verticales</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">360°</div>
+      <div class="stat-label">Cobertura</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">1</div>
+      <div class="stat-label">Contacto</div>
+    </div>
+  </div>
+</section>
+
+<div class="glow-bar"></div>
+
+<!-- PITCH 360 -->
+<section id="pitch">
+  <div class="section-label">El ecosistema ARQ-TECH</div>
+  <h2 class="pitch-h2 reveal">
+    Un solo punto<br/>
+    de contacto para<br/>
+    <em>todo el ciclo</em><br/>
+    de tu obra.
+  </h2>
+  <p class="pitch-p reveal">
+    Somos la única firma en Córdoba que integra construcción avanzada en Steel Framing, interiorismo de autor con muebles a medida, e ingeniería domótica inteligente. Cada vertical trabaja de manera independiente — y juntas, son imbatibles.
+  </p>
+  <p class="pitch-p reveal">
+    Podés contratarnos por etapas o como solución llave en mano. En ambos casos, tenés un equipo experto que conoce tu proyecto de punta a punta.
+  </p>
+
+  <div class="journey reveal">
+    <div class="journey-step">
+      <div class="step-dot sofi">01</div>
+      <div class="step-content">
+        <h4>Estructura · Steel Framing</h4>
+        <p>Sofía Bringas diseña y construye la estructura con tecnología de obra en seco. Velocidad, precisión y eficiencia desde el primer día.</p>
+      </div>
+    </div>
+    <div class="journey-step">
+      <div class="step-dot op">02</div>
+      <div class="step-content">
+        <h4>Identidad · Interiorismo</h4>
+        <p>OP Studio transforma el espacio con diseño de autor y muebles a medida directo de fábrica. Tu hogar, tu identidad.</p>
+      </div>
+    </div>
+    <div class="journey-step">
+      <div class="step-dot retys">03</div>
+      <div class="step-content">
+        <h4>Inteligencia · Domótica</h4>
+        <p>RETYS convierte la obra en una experiencia habitable inteligente. Control total desde tu celular: iluminación, seguridad, confort.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="glow-bar"></div>
+
+<!-- VERTICALES NAV -->
+<section id="verticales" style="padding-top: 5rem;">
+  <div style="padding: 0 1.5rem; margin-bottom: 1.5rem;">
+    <div class="section-label">Nuestras verticales</div>
+    <h2 class="pitch-h2 reveal" style="font-size: clamp(1.4rem, 5vw, 2rem);">Elegí tu servicio</h2>
+  </div>
+
+  <div class="vert-tabs" style="margin: 0 1.5rem 0;">
+    <button class="vert-tab active-sofi" onclick="switchPanel('sofi', this)">
+      <span class="tab-icon">🏗️</span>
+      <span class="tab-name">Construcción</span>
+      <span class="tab-sub">Steel Framing</span>
+    </button>
+    <button class="vert-tab" onclick="switchPanel('op', this)">
+      <span class="tab-icon">🛋️</span>
+      <span class="tab-name">Interiorismo</span>
+      <span class="tab-sub">OP Studio</span>
+    </button>
+    <button class="vert-tab" onclick="switchPanel('retys', this)">
+      <span class="tab-icon">🏠</span>
+      <span class="tab-name">Domótica</span>
+      <span class="tab-sub">RETYS</span>
+    </button>
+  </div>
+</section>
+
+<!-- ═══ PANEL SOFI ═══ -->
+<div id="sofi-panel" class="vert-panel active">
+  <div class="glow-bar sofi" style="margin-top:0;"></div>
+  <div class="panel-hero">
+    <div class="panel-bg-glow"></div>
+    <div class="panel-brand">ARQ-TECH | Construcción</div>
+    <h2 class="panel-title">
+      Sofía Bringas<br/>
+      <span class="panel-accent">Arquitectura.</span>
+    </h2>
+    <p class="panel-tagline">
+      Cimientos y construcción avanzada en Steel Framing. Eficiencia y rapidez como base del proyecto — 60% menos tiempo que el ladrillo tradicional.
+    </p>
+    <div class="responsable-card">
+      <div class="avatar">👩‍🏗️</div>
+      <div class="resp-info">
+        <h4>Sofía Bringas</h4>
+        <p>Arq. · Especialista Steel Framing & Obra en Seco</p>
+      </div>
+      <span class="resp-badge">Responsable</span>
+    </div>
+  </div>
+
+  <div class="keywords">
+    <span class="kw-pill">#SteelFraming</span>
+    <span class="kw-pill">#ObraEnSeco</span>
+    <span class="kw-pill">#VillaCarlosPaz</span>
+    <span class="kw-pill">#Sustentable</span>
+    <span class="kw-pill">#Eficiencia</span>
+    <span class="kw-pill">#ConstrucciónRápida</span>
+    <span class="kw-pill">#ArquitecturaModerna</span>
+  </div>
+
+  <div class="servicios-section">
+    <div class="servicios-title">Servicios</div>
+
+    <div class="servicio-card">
+      <div class="servicio-header">
+        <span class="servicio-icon">📐</span>
+        <span class="servicio-name">Proyectos en Steel Framing</span>
+      </div>
+      <p class="servicio-desc">Diseño y ejecución de viviendas, ampliaciones y locales comerciales con estructura de acero en frío. Rapidez, precisión y menor costo por m² que la mampostería.</p>
+    </div>
+
+    <div class="servicio-card">
+      <div class="servicio-header">
+        <span class="servicio-icon">📋</span>
+        <span class="servicio-name">Planos y Gestión Municipal</span>
+      </div>
+      <p class="servicio-desc">Tramitación de permisos de obra, planos ejecutivos y memoria descriptiva. Todo listo para la municipalidad, sin que tengas que preocuparte.</p>
+    </div>
+
+    <div class="servicio-card">
+      <div class="servicio-header">
+        <span class="servicio-icon">🏠</span>
+        <span class="servicio-name">Ampliaciones y Refuncionalización</span>
+      </div>
+      <p class="servicio-desc">Suma metros cuadrados a tu casa existente o transforma espacios infrautilizados. Soluciones industrializadas que minimizan el tiempo de obra.</p>
+    </div>
+
+    <div class="servicio-card">
+      <div class="servicio-header">
+        <span class="servicio-icon">💻</span>
+        <span class="servicio-name">Cotizador Online + Render 3D</span>
+      </div>
+      <p class="servicio-desc">Visualizá tu proyecto antes de construir. Cotización personalizada y renders fotorrealistas para que tomes decisiones con información real.</p>
+    </div>
+
+    <div class="servicio-card">
+      <div class="servicio-header">
+        <span class="servicio-icon">🤝</span>
+        <span class="servicio-name">Obra Llave en Mano</span>
+      </div>
+      <p class="servicio-desc">Nos encargamos de todo: diseño, materiales, ejecución y coordinación con OP Studio y RETYS para que recibas tu espacio terminado al 100%.</p>
+    </div>
+  </div>
+
+  <div class="faq-section">
+    <div class="servicios-title">Preguntas frecuentes</div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        ¿Es más barato que el ladrillo?
+        <span class="faq-toggle">+</span>
+      </div>
+      <div class="faq-a">Sí. El Steel Framing tiene un costo/beneficio superior al ladrillo tradicional. La estructura es más liviana, el tiempo de obra es 60% menor y los desperdicios de material son mínimos. Eso se traduce directamente en ahorro real para el cliente.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        ¿Cuánto tarda una obra?
+        <span class="faq-toggle">+</span>
+      </div>
+      <div class="faq-a">Una vivienda de 80–100 m² en Steel Framing se levanta estructuralmente en 4 a 6 semanas, frente a los 3–4 meses de la mampostería. La industrialización del proceso es la clave.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        ¿Trabajan en toda Córdoba?
+        <span class="faq-toggle">+</span>
+      </div>
+      <div class="faq-a">Sí. Estamos basados en Villa Carlos Paz y operamos en todo el Valle de Punilla, Córdoba Capital y zonas aledañas: Manantiales, Valle Escondido y más.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        ¿Puedo sumar interiorismo y domótica al proyecto?
+        <span class="faq-toggle">+</span>
+      </div>
+      <div class="faq-a">Absolutamente. Desde el inicio de la obra coordinamos con OP Studio para el amoblamiento y con RETYS para la pre-instalación de domótica. El cliente de ARQ-TECH obtiene un 10% de descuento en domótica RETYS al construir con Sofía.</div>
+    </div>
+  </div>
+
+  <div class="panel-cta">
+    <h3>¿Listo para construir?</h3>
+    <p>Consultanos sin compromiso. Te respondemos en menos de 2 horas hábiles.</p>
+    <a href="https://wa.me/5493541000000?text=Hola%20Sof%C3%ADa%2C%20me%20interesa%20conocer%20m%C3%A1s%20sobre%20Steel%20Framing%20y%20quisiera%20un%20presupuesto" class="btn-wa btn-wa-alt" target="_blank">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      Hablar con Sofía
+    </a>
+  </div>
+</div>
+
+<!-- ═══ PANEL OP ═══ -->
+<div id="op-panel" class="vert-panel">
+  <div class="glow-bar op" style="margin-top:0;"></div>
+  <div class="panel-hero">
+    <div class="panel-bg-glow"></div>
+    <div class="panel-brand">ARQ-TECH | Interiorismo</div>
+    <h2 class="panel-title">
+      OP Studio<br/>
+      <span class="panel-accent">Interior Design.</span>
+    </h2>
+    <p class="panel-tagline">
+      Interiorismo emocional y mobiliario a medida. El valor del diseño personalizado con costo optimizado — directo de fábrica, sin intermediarios.
+    </p>
+    <div class="responsable-card">
+      <div class="avatar">👩‍🎨</div>
+      <div class="resp-info">
+        <h4>Pau Ocaña</h4>
+        <p>Arq. de Interiores · Diseño de Muebles a Medida</p>
+      </div>
+      <span class="resp-badge">Responsable</span>
+    </div>
+  </div>
+
+  <div class="keywords">
+    <span class="kw-pill">#InteriorismoCordoba</span>
+    <span class="kw-pill">#MueblesAMedida</span>
+    <span class="kw-pill">#Render3D</span>
+    <span class="kw-pill">#DiseñoDeAutor</span>
+    <span class="kw-pill">#Online</span>
+    <span class="kw-pill">#Remodelación</span>
+    <span class="kw-pill">#HomeStaging</span>
+  </div>
+
+  <div class="servicios-section">
+    <div class="servicios-title">Servicios</div>
+
+    <div class="servicio-card">
+      <div class="servicio-header">
+        <span class="servicio-icon">✏️</span>
+        <span class="servicio-name">Asesoría Integral de Interiorismo</span>
+      </div>
+      <p class="servicio-desc">Plano de distribución, selección de materiales, paleta de colores y asesoramiento completo. Todo lo que necesitás para transformar tu espacio con criterio profesional.</p>
+    </div>
+
+    <div class="servicio-card">
+      <div class="servicio-header">
+        <span class="servicio-icon">🛋️</span>
+        <span class="servicio-name">Muebles a Medida — Fábrica Propia</span>
+      </div>
+      <p class="servicio-desc">Cocinas, placard, living a medida. Fabricación directa sin mueblería intermediaria = hasta 35% de ahorro frente a precios de local. Calidad premium, precio justo.</p>
+    </div>
+
+    <div class="servicio-card">
+      <div class="servicio-header">
+        <span class="servicio-icon">🖥️</span>
+        <span class="servicio-name">Render 3D + Cotizador Interactivo</span>
+      </div>
+      <p class="servicio-desc">Visualizá tu espacio antes de gastar un peso. Render fotorrealista de tu ambiente con los muebles elegidos. Cotizá online, sin turnos ni esperas.</p>
+    </div>
+
+    <div class="servicio-card">
+      <div class="servicio-header">
+        <span class="servicio-icon">🔄</span>
+        <span class="servicio-name">Remodelación de Departamentos</span>
+      </div>
+      <p class="servicio-desc">Transformamos departamentos estándar en espacios únicos. Coordinación con obra, pintura, iluminación y mobiliario en un solo proyecto gestionado.</p>
+    </div>
+
+    <div class="servicio-card">
+      <div class="servicio-header">
+        <span class="servicio-icon">🌐</span>
+        <span class="servicio-name">Servicio Online — Todo el País</span>
+      </div>
+      <p class="servicio-desc">¿Estás fuera de Córdoba? No es problema. Asesoramos de forma 100% digital con videollamadas, planos y renders compartidos por drive.</p>
+    </div>
+  </div>
+
+  <div class="faq-section">
+    <div class="servicios-title">Preguntas frecuentes</div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        ¿Tienen mejores precios que mueblerías?
+        <span class="faq-toggle">+</span>
+      </div>
+      <div class="faq-a">Sí. Al tener fábrica propia, eliminamos el margen de la mueblería. El cliente recibe producto de calidad superior a un precio que puede ser hasta un 35% menor que en locales comerciales.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        ¿Qué incluye la asesoría?
+        <span class="faq-toggle">+</span>
+      </div>
+      <div class="faq-a">Plano de distribución, render 3D del ambiente, selección de telas, materiales y acabados, propuesta de iluminación y acompañamiento hasta la entrega del mobiliario.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        ¿Diseñan para todo el país?
+        <span class="faq-toggle">+</span>
+      </div>
+      <div class="faq-a">Sí. La asesoría es 100% online. Los muebles a medida se fabrican en Córdoba y coordinamos la logística de entrega.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        ¿Puedo integrar domótica con el diseño?
+        <span class="faq-toggle">+</span>
+      </div>
+      <div class="faq-a">Absolutamente. Al diseñar el living u otros ambientes, integramos escenas de iluminación inteligente y audio con RETYS. El resultado es un espacio que se ve hermoso y se comporta de forma inteligente.</div>
+    </div>
+  </div>
+
+  <div class="panel-cta">
+    <h3>¿Querés ver tu espacio transformado?</h3>
+    <p>Pedí tu render 3D gratis para el primer ambiente. Sin compromiso.</p>
+    <a href="https://wa.me/5493541000000?text=Hola%20OP%20Studio%2C%20quisiera%20consultar%20sobre%20dise%C3%B1o%20de%20interiores%20y%20un%20render%203D" class="btn-wa btn-wa-op" target="_blank">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      Hablar con OP Studio
+    </a>
+  </div>
+</div>
+
+<!-- ═══ PANEL RETYS ═══ -->
+<div id="retys-panel" class="vert-panel">
+  <div class="glow-bar retys" style="margin-top:0;"></div>
+  <div class="panel-hero">
+    <div class="panel-bg-glow"></div>
+    <div class="panel-brand">ARQ-TECH | Domótica</div>
+    <h2 class="panel-title">
+      RETYS<br/>
+      <span class="panel-accent">Ingeniería Smart.</span>
+    </h2>
+    <p class="panel-tagline">
+      La tecnología que convierte una obra en una experiencia habitable inteligente. Domótica de vanguardia, control total desde tu celular.
+    </p>
+    <div class="responsable-card">
+      <div class="avatar">👨‍💻</div>
+      <div class="resp-info">
+        <h4>Equipo RETYS</h4>
+        <p>Ingeniería · Domótica · Integración Inteligente</p>
+      </div>
+      <span class="resp-badge">Responsable</span>
+    </div>
+  </div>
+
+  <div class="keywords">
+    <span class="kw-pill">#Domótica</span>
+    <span class="kw-pill">#CasaInteligente</span>
+    <span class="kw-pill">#SmartHome</span>
+    <span class="kw-pill">#SeguridadHogar</span>
+    <span class="kw-pill">#EficienciaEnergética</span>
+    <span class="kw-pill">#Ingeniería</span>
+    <span class="kw-pill">#ConfortDigital</span>
+  </div>
+
+  <div class="servicios-section">
+    <div class="servicios-title">Servicios</div>
+
+    <div class="servicio-card">
+      <div class="servicio-header">
+        <span class="servicio-icon">💡</span>
+        <span class="servicio-name">Iluminación Inteligente</span>
+      </div>
+      <p class="servicio-desc">Control total de la iluminación por zonas, escenas y horarios. Ahorro energético real + confort sin igual. Compatible con Apple Home, Google y Alexa.</p>
+    </div>
+
+    <div class="servicio-card">
+      <div class="servicio-header">
+        <span class="servicio-icon">🔒</span>
+        <span class="servicio-name">Seguridad Residencial Inteligente</span>
+      </div>
+      <p class="servicio-desc">Cámaras IP, sensores de movimiento, cerradura digital y alarmas integradas. Monitoreo 24/7 desde tu smartphone, desde cualquier parte del mundo.</p>
+    </div>
+
+    <div class="servicio-card">
+      <div class="servicio-header">
+        <span class="servicio-icon">🌡️</span>
+        <span class="servicio-name">Climatización & Confort Automatizado</span>
+      </div>
+      <p class="servicio-desc">Termostatos inteligentes y control centralizado de splits. La temperatura ideal te espera sin que tengas que hacer nada.</p>
+    </div>
+
+    <div class="servicio-card">
+      <div class="servicio-header">
+        <span class="servicio-icon">⚡</span>
+        <span class="servicio-name">Proyectos Eléctricos & Pre-instalación</span>
+      </div>
+      <p class="servicio-desc">Ingeniería eléctrica completa para obras nuevas o existentes. Pre-instalación durante la obra de Steel Framing para máxima eficiencia y costo optimizado.</p>
+    </div>
+
+    <div class="servicio-card">
+      <div class="servicio-header">
+        <span class="servicio-icon">🎵</span>
+        <span class="servicio-name">Audio & Entretenimiento Integrado</span>
+      </div>
+      <p class="servicio-desc">Música multiroom, home cinema y sonido ambiente sincronizados con la iluminación. Una experiencia sensorial completa dentro de tu hogar.</p>
+    </div>
+  </div>
+
+  <div class="faq-section">
+    <div class="servicios-title">Preguntas frecuentes</div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        ¿Se puede instalar en una casa ya construida?
+        <span class="faq-toggle">+</span>
+      </div>
+      <div class="faq-a">Sí. RETYS instala sistemas inteligentes tanto en obras nuevas como en viviendas existentes. En casas ya construidas, usamos soluciones inalámbricas que no requieren romper paredes.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        ¿Qué plataformas son compatibles?
+        <span class="faq-toggle">+</span>
+      </div>
+      <div class="faq-a">Trabajamos con los principales ecosistemas: Apple HomeKit, Google Home y Amazon Alexa. Todos los sistemas son controlables desde una sola app en tu smartphone.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        ¿Hay descuento si construyo con Sofía Bringas?
+        <span class="faq-toggle">+</span>
+      </div>
+      <div class="faq-a">Sí. Los clientes que construyen con Sofía Bringas obtienen un 10% de descuento en domótica RETYS, además de coordinar la pre-instalación eléctrica desde el inicio de la obra para mayor eficiencia.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        ¿Qué pasa si tengo un problema técnico?
+        <span class="faq-toggle">+</span>
+      </div>
+      <div class="faq-a">Ofrecemos soporte técnico post-venta y garantía en todos los equipos instalados. La mayoría de los problemas se resuelven de forma remota sin necesidad de visita.</div>
+    </div>
+  </div>
+
+  <div class="panel-cta">
+    <h3>¿Tu casa aún no es inteligente?</h3>
+    <p>Consultá sin cargo. Evaluamos tu espacio y te proponemos la solución ideal.</p>
+    <a href="https://wa.me/5493541000000?text=Hola%20RETYS%2C%20me%20interesa%20implementar%20dom%C3%B3tica%20en%20mi%20hogar%2C%20quisiera%20m%C3%A1s%20informaci%C3%B3n" class="btn-wa" target="_blank">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      Hablar con RETYS
+    </a>
+  </div>
+</div>
+
+<div class="glow-bar" style="margin: 0 1.5rem;"></div>
+
+<!-- ECOSYSTEM -->
+<section id="ecosystem">
+  <div class="section-label">Sinergia 360°</div>
+  <h2 class="pitch-h2 reveal" style="font-size: clamp(1.4rem,5vw,2rem); margin-bottom: 0.8rem;">
+    Más ahorro cuando<br/>
+    combinás verticales
+  </h2>
+  <p class="pitch-p reveal" style="font-size:0.87rem;">El ecosistema ARQ-TECH está diseñado para que cada vertical potencie a las demás. Estas son las sinergias más valoradas por nuestros clientes:</p>
+
+  <div class="eco-grid reveal">
+    <div class="eco-card">
+      <div class="eco-num">01</div>
+      <div class="eco-text">
+        <h3>🏗️ + 🏠 = 10% OFF Domótica</h3>
+        <p>Si construís con Sofía Bringas, obtenés un descuento del 10% en la instalación de domótica RETYS y coordinación eléctrica desde el inicio de la obra.</p>
+      </div>
+    </div>
+    <div class="eco-card">
+      <div class="eco-num">02</div>
+      <div class="eco-text">
+        <h3>🛋️ + 🏠 = Espacios Vivos</h3>
+        <p>OP Studio integra escenas de iluminación y audio inteligente de RETYS en cada diseño. Tu living no solo se ve hermoso — responde a vos.</p>
+      </div>
+    </div>
+    <div class="eco-card">
+      <div class="eco-num">03</div>
+      <div class="eco-text">
+        <h3>Llave en Mano Total</h3>
+        <p>Construís, decorás y automatizás con un único equipo coordinado. Un proyecto, un interlocutor, cero fricciones entre etapas.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="glow-bar"></div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">ARQ<span>-TECH</span> Argentina</div>
+  <div class="footer-sub">La evolución de la vivienda · Eficiente, Diseñada e Inteligente</div>
+  <div class="footer-brands">
+    <span class="footer-brand sofi">🏗️ Construcción · Sofía Bringas</span>
+    <span class="footer-brand op">🛋️ OP Studio · Interiorismo</span>
+    <span class="footer-brand retys">🏠 RETYS · Domótica</span>
+  </div>
+  <div class="footer-legal">© 2025 ARQ-TECH Argentina · Córdoba, Argentina · Villa Carlos Paz & Zona</div>
+</footer>
+
+<!-- THREE.JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+<script>
+// ═══ THREE.JS BACKGROUND ═══
+(function() {
+  const canvas = document.getElementById('bg-canvas');
+  const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setClearColor(0x000000, 0);
+
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 100);
+  camera.position.z = 5;
+
+  // Particle field
+  const count = 800;
+  const positions = new Float32Array(count * 3);
+  const colors = new Float32Array(count * 3);
+
+  const palettes = [
+    [0.96, 0.77, 0.09],   // gold
+    [0.06, 0.73, 0.93],   // cyan (retys)
+    [1.0, 0.42, 0.21],    // orange (sofi)
+    [0.83, 0.72, 0.59],   // beige (op)
+  ];
+
+  for (let i = 0; i < count; i++) {
+    positions[i * 3]     = (Math.random() - 0.5) * 20;
+    positions[i * 3 + 1] = (Math.random() - 0.5) * 20;
+    positions[i * 3 + 2] = (Math.random() - 0.5) * 10 - 2;
+
+    const p = palettes[Math.floor(Math.random() * palettes.length)];
+    colors[i * 3]     = p[0];
+    colors[i * 3 + 1] = p[1];
+    colors[i * 3 + 2] = p[2];
+  }
+
+  const geo = new THREE.BufferGeometry();
+  geo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+  geo.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+
+  const mat = new THREE.PointsMaterial({
+    size: 0.025,
+    vertexColors: true,
+    transparent: true,
+    opacity: 0.6,
+    sizeAttenuation: true,
+  });
+
+  const points = new THREE.Points(geo, mat);
+  scene.scene = points;
+  scene.add(points);
+
+  // Floating geometric wireframes
+  const geometries = [
+    new THREE.OctahedronGeometry(0.8, 0),
+    new THREE.TetrahedronGeometry(0.6, 0),
+    new THREE.IcosahedronGeometry(0.5, 0),
+  ];
+
+  const wireColors = [0xF5C518, 0x22D3EE, 0xFF6B35];
+  const meshes = [];
+
+  geometries.forEach((g, i) => {
+    const wmat = new THREE.MeshBasicMaterial({
+      color: wireColors[i],
+      wireframe: true,
+      transparent: true,
+      opacity: 0.08,
+    });
+    const mesh = new THREE.Mesh(g, wmat);
+    mesh.position.set(
+      (i - 1) * 3.5,
+      Math.sin(i) * 1.5,
+      -3
+    );
+    scene.add(mesh);
+    meshes.push(mesh);
+  });
+
+  let scrollY = 0;
+  window.addEventListener('scroll', () => { scrollY = window.scrollY; });
+
+  let time = 0;
+  function animate() {
+    requestAnimationFrame(animate);
+    time += 0.004;
+
+    points.rotation.y = time * 0.05;
+    points.rotation.x = time * 0.02;
+
+    meshes.forEach((m, i) => {
+      m.rotation.x = time * (0.3 + i * 0.1);
+      m.rotation.y = time * (0.2 + i * 0.07);
+      m.position.y = Math.sin(time + i * 1.5) * 1.2;
+    });
+
+    camera.position.y = -scrollY * 0.001;
+
+    renderer.render(scene, camera);
+  }
+
+  animate();
+
+  window.addEventListener('resize', () => {
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+  });
+})();
+
+// ═══ NAVBAR SCROLL ═══
+window.addEventListener('scroll', () => {
+  const nav = document.getElementById('navbar');
+  nav.classList.toggle('scrolled', window.scrollY > 40);
+});
+
+// ═══ PANEL SWITCHING ═══
+function switchPanel(id, btn) {
+  // Hide all panels
+  document.querySelectorAll('.vert-panel').forEach(p => p.classList.remove('active'));
+
+  // Show target
+  document.getElementById(id + '-panel').classList.add('active');
+
+  // Update tabs
+  document.querySelectorAll('.vert-tab').forEach(t => {
+    t.classList.remove('active-sofi', 'active-op', 'active-retys');
+  });
+  btn.classList.add('active-' + id);
+
+  // Scroll to panel
+  setTimeout(() => {
+    document.getElementById(id + '-panel').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }, 50);
+}
+
+// ═══ FAQ TOGGLE ═══
+function toggleFaq(el) {
+  const item = el.parentElement;
+  const wasOpen = item.classList.contains('open');
+
+  // Close siblings in same section
+  item.parentElement.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+
+  if (!wasOpen) item.classList.add('open');
+}
+
+// ═══ SCROLL REVEAL ═══
+const revealObserver = new IntersectionObserver((entries) => {
+  entries.forEach((e, i) => {
+    if (e.isIntersecting) {
+      setTimeout(() => e.target.classList.add('visible'), i * 80);
+    }
+  });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+
+// ═══ SMOOTH ANCHOR SCROLL ═══
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    const target = document.querySelector(a.getAttribute('href'));
+    if (target) {
+      e.preventDefault();
+      target.scrollIntoView({ behavior: 'smooth' });
+    }
+  });
+});
+
+// ═══ COUNTER ANIMATION ═══
+function animateCounter(el, target, suffix = '') {
+  let start = 0;
+  const duration = 1500;
+  const step = (timestamp) => {
+    if (!start) start = timestamp;
+    const progress = Math.min((timestamp - start) / duration, 1);
+    const eased = 1 - Math.pow(1 - progress, 3);
+    el.textContent = (typeof target === 'number' ? Math.round(eased * target) : target) + suffix;
+    if (progress < 1) requestAnimationFrame(step);
+  };
+  requestAnimationFrame(step);
+}
+
+const statsObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const nums = entry.target.querySelectorAll('.stat-num');
+      nums.forEach(n => {
+        const text = n.textContent.trim();
+        if (text === '3') animateCounter(n, 3);
+        else if (text === '360°') { /* keep as is */ }
+        else if (text === '1') animateCounter(n, 1);
+      });
+      statsObserver.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.5 });
+
+const statsGrid = document.querySelector('.stats-grid');
+if (statsGrid) statsObserver.observe(statsGrid);
+</script>
+</body>
+</html>
